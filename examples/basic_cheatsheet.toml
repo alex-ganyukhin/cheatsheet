@@ -1,0 +1,9 @@
+[[entry]]
+title = "ls"
+command = "ls -la"
+description = "List directory contents"
+
+[[entry]]
+title = "grep"
+command = "grep -R "
+description = "Search recursively for a pattern"

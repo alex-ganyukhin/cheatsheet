@@ -1,0 +1,15 @@
+[package]
+name = "cheatsheet"
+version = "0.1.0"
+edition = "2021"
+authors = ["Aleksandr Ganiukhin <aganyukhin@outlook.com>"]
+description = "A simple CLI to manage personal command cheat sheets."
+license = "MIT"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"
+fuzzy-matcher = "0.3"
+
+[dev-dependencies]
