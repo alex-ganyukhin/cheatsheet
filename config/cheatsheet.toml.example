@@ -1,0 +1,8 @@
+# Cheatsheet Configuration Example
+# This file demonstrates the available fields for cheat sheet entries
+# This file also contains examples of invocation of the cheatsheet app itself
+
+[[entry]]
+title = "cs"
+command = "cheatsheet"
+description = "Shortcut for cheatsheet command"

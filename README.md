@@ -39,6 +39,7 @@ cheatsheet chmod
 - [ ] Select entry with Enter, copy or print it
 - [ ] Maintain search history and usage frequency
 - [ ] Shell integration (bash/zsh/fish)
+- [ ] Import and Export
 
 **Example**
 ```bash
@@ -64,70 +65,6 @@ cheatsheet ai "list largest files in current folder"
 
 ---
 
-## 🧩 Implementation Roadmap
-
-### **1. Project Setup**
-- [ ] Initialize cargo workspace (`cargo new cheatsheet --bin`)
-- [ ] Add dependencies:
-  - `clap` (CLI parsing)
-  - `serde`, `toml` (storage)
-  - `fuzzy-matcher` (fuzzy search)
-  - `ratatui` / `crossterm` (TUI, later)
-- [ ] Setup config path in `~/.config/cheatsheet/`
-
----
-
-### **2. Data Model & Storage**
-- [ ] Define `Entry` struct: `{ title, command, description, tags }`
-- [ ] Implement file-based storage (TOML)
-- [ ] CRUD operations: add, list, remove
-- [ ] Handle duplicate prevention + autosave
-
----
-
-### **3. Fuzzy Search Engine**
-- [ ] Integrate fuzzy matching library
-- [ ] Implement `search(term)` → ranked results
-- [ ] Support partial matches and case insensitivity
-- [ ] Display match results with score
-
----
-
-### **4. Command-Line Interface**
-- [ ] Build `add`, `list`, `remove`, `search` subcommands
-- [ ] Use `clap` derive API
-- [ ] Add colored output via `colored` crate
-- [ ] Add help and version flags
-
----
-
-### **5. Interactive Search (TUI)**
-- [ ] Initialize TUI screen with `ratatui`
-- [ ] Display list of entries dynamically filtered as user types
-- [ ] Add navigation (↑↓, Enter, Esc)
-- [ ] Integrate with existing search engine
-- [ ] Persist last used entry
-
----
-
-### **6. AI Search (Natural Language)**
-- [ ] Add optional embedding model loader (ONNX or remote API)
-- [ ] Generate vector embeddings for each entry (title + description)
-- [ ] Build local ANN index for fast retrieval
-- [ ] Implement hybrid ranker (semantic + fuzzy)
-- [ ] Return top candidate with rationale
-
----
-
-### **7. Polish & Distribution**
-- [ ] Write usage examples and help text
-- [ ] Add `--init` command to create starter cheat sheet
-- [ ] Add tests for storage and search logic
-- [ ] Publish binary to crates.io
-- [ ] Optional: prebuilt binaries via GitHub Actions
-
----
-
 ## 🧠 Example Workflow
 
 ```bash
@@ -144,13 +81,3 @@ cheatsheet
 # Ask AI
 cheatsheet ai "find all text files containing TODO"
 ```
-
----
-
-## 📍 Roadmap Summary
-
-| Milestone   | Focus                       | Core Outcome           |
-| ----------- | --------------------------- | ---------------------- |
-| ✅ Base      | Store and retrieve commands | CLI + file storage     |
-| ⏳ Extended  | Interactive search          | TUI + history          |
-| 🔮 AI Search | Natural-language lookup     | Smart command matching |
