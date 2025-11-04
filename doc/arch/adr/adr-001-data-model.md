@@ -40,7 +40,7 @@ The primary requirement:
   - Not null
   - Max length 5000 characters
 - status: Accepted
-- justification: 5000 characters if WAY above what we need for MVP, but gives us room to grow
+- justification: 5000 characters is WAY above what we need for MVP, but gives us room to grow
 
 **description**
 - name: description
@@ -66,5 +66,4 @@ The primary requirement:
 
 #### Negative consequences
 
-* Bad, because {negative consequence, e.g., compromising one or more desired qualities, …}
-* …
+* At the moment of creation no negative consequences
