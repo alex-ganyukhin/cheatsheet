@@ -1,7 +1,4 @@
-/// Core domain representation of a cheat sheet entry.
-///
-/// This struct intentionally stays minimal for the basic scope and can be
-/// extended later with optional fields such as tags or usage counters.
+/// A single entry in the cheat sheet
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Entry {
     pub title: String,

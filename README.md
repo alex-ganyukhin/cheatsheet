@@ -39,6 +39,7 @@ cheatsheet chmod
 - [ ] Select entry with Enter, copy or print it
 - [ ] Maintain search history and usage frequency
 - [ ] Shell integration (bash/zsh/fish)
+- [ ] Import and Export
 
 **Example**
 ```bash
