@@ -1,0 +1,1 @@
+pub const CONFIG_PATH: &str = "CHEATSHEET_CONFIG_PATH";

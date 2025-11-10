@@ -1,7 +1,7 @@
 # Data Model
 
-- **Status**: Proposed
-- **Date**: 2025-10-31
+- **Status**: Accepted
+- **Date**: 2025-11-02
 - **Decision-maker**: Aleksandr Ganiukhin
 
 
