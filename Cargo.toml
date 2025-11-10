@@ -7,9 +7,10 @@ description = "A simple CLI to manage personal command cheat sheets."
 license = "MIT"
 
 [dependencies]
-clap = { version = "4", features = ["derive"] }
+clap = { version = "4", features = ["derive", "env"] }
 serde = { version = "1", features = ["derive"] }
 toml = "0.8"
 fuzzy-matcher = "0.3"
+spdlog-rs = "0.5.1"
 
 [dev-dependencies]
