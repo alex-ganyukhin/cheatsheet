@@ -1,13 +1,13 @@
 # Style of the CLI interface
 
-- **Status**: Proposed
-- **Date**: 2025-11-02
+- **Status**: Accepted
+- **Date**: 2025-11-09
 - **Decision-maker**: Aleksandr Ganiukhin
 
 
 ## Context and Problem Statement
 
-It is requires to select user-friendly and consistent style for the CLI interface of the application.
+It is required to select a user-friendly and consistent style for the CLI interface of the application.
 - The CLI interface should be intuitive and easy to use for end users.
 - The CLI interface should follow best practices and conventions for command-line applications.
 

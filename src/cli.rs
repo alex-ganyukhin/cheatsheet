@@ -7,7 +7,7 @@ use crate::constants;
 #[derive(Parser, Debug)]
 #[command(name = "cheatsheet", version, about = "A command-line cheatsheet manager")]
 pub struct CheatsheetCli {
-    #[arg(short, long, help = "Path to the configuration file", env = constants::env_vars::CONFIG_PATH, default_value = "")]
+    #[arg(short, long, help = "Path to the configuration file", env = constants::env_vars::CONFIG_PATH, default_value = constants::defaults::CONFIG_PATH.as_str())]
     pub config: Option<String>,
 
     #[arg(short, long, action = ArgAction::Count, help = "Enable verbose output")]
@@ -33,11 +33,11 @@ pub enum Commands {
 #[derive(Parser, Debug)]
 pub struct SearchArgs {
     #[arg(short, long, help = "Perform an exact match search.")]
-    exact: bool,
+    pub exact: bool,
 
     /// The search query
     #[arg(required = true, trailing_var_arg = true, help = "The search query itself.")]
-    query: Vec<String>,
+    pub query: Vec<String>,
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -55,13 +55,13 @@ pub struct ListArgs {}
 #[derive(Parser, Debug)]
 pub struct AddArgs {
     #[arg(short, long, required = true, help = "Title of the command. Must be unique.")]
-    title: String,
+    pub title: String,
 
     #[arg(short, long, required = true, help = "The command itself")]
-    command: String,
+    pub command: String,
 
     #[arg(short, long, required = false, help = "Description of the command")]
-    description: String,
+    pub description: Option<String>,
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -71,7 +71,7 @@ pub struct AddArgs {
 #[derive(Parser, Debug)]
 pub struct RemoveArgs {
     #[arg(short, long, required = true, help = "Title of the command to remove.")]
-    title: String,
+    pub title: String,
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -30,40 +30,31 @@ fn main() {
 
     match cli.command {
         cheatsheet::cli::Commands::Search(args) => {
-            spdlog::error!(
+            spdlog::warn!(
                 "Executing 'search' command with args: {:#?} \n\nIS NOT IMPLEMENTED YET.",
                 args
             );
         }
         cheatsheet::cli::Commands::List(args) => {
-            spdlog::error!(
+            spdlog::warn!(
                 "Executing 'list' command with args: {:#?} \n\nIS NOT IMPLEMENTED YET.",
                 args
             );
         }
         cheatsheet::cli::Commands::Add(args) => {
-            spdlog::error!(
+            spdlog::warn!(
                 "Executing 'add' command with args: {:#?} \n\nIS NOT IMPLEMENTED YET.",
                 args
             );
         }
         cheatsheet::cli::Commands::Remove(args) => {
-            spdlog::error!(
+            spdlog::warn!(
                 "Executing 'remove' command with args: {:#?} \n\nIS NOT IMPLEMENTED YET.",
                 args
             );
         }
-        cheatsheet::cli::Commands::ShowConfig(args) => {
-            println!(
-                "Showing config path: {}",
-                cheatsheet::constants::defaults::CONFIG_PATH.as_str()
-            );
-            spdlog::error!(
-                "Executing 'show-config' command with args: {:#?} \n\nIS NOT IMPLEMENTED YET.",
-                args
-            );
+        cheatsheet::cli::Commands::ShowConfig(_) => {
+            println!("Using config path: {}", cli.config.as_deref().unwrap_or("UNKNOWN"));
         }
     }
-
-    return;
 }
