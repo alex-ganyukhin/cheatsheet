@@ -1,12 +1,37 @@
 use crate::domain::entry::Entry;
 
+pub struct MatchedEntry {
+    /// The matched entry
+    pub entry: Entry,
+
+    /// The score indicating how well the entry matches the search query.
+    /// It is not defined what the score range is, how it is calculated, etc.
+    /// The only guarantee is that higher score means better match.
+    pub score: f32,
+}
+
+pub struct SearchParameters {
+    /// The query string to search for.
+    pub query: String,
+    pub max_results: Option<usize>,
+}
+
+impl SearchParameters {
+    pub fn return_all(query: String) -> Self {
+        SearchParameters {
+            query,
+            max_results: None,
+        }
+    }
+}
+
 pub trait EntriesSearch {
     /// Searches through the provided entries using the given query string.
     /// Returns a vector of entries that match the query.
     ///
     /// # Example
     /// ```
-    /// let result = some_search.search(entries, "query");
+    /// let result = some_search.search(entries, &SearchParameters::return_all("query".into()));
     /// ```
-    fn search(&self, entries: &[Entry], _query: &str) -> Vec<Entry>;
+    fn search(&self, entries: &[Entry], search_parameters: &SearchParameters) -> Vec<MatchedEntry>;
 }

@@ -35,6 +35,7 @@ fn setup_logger(cli: &CheatsheetCli) {
 fn load_app_context(cli: &CheatsheetCli) -> CommandContext {
     CommandContext {
         storage: Box::new(TomlEntryStorage::new(std::path::PathBuf::from(cli.config.clone()))),
+        writer: Box::new(std::io::stdout()),
     }
 }
 
@@ -55,14 +56,14 @@ fn main() -> Result<(), anyhow::Error> {
 
     spdlog::debug!("Parsed CLI arguments: {:#?}", cli);
 
-    let context = load_app_context(&cli);
+    let mut context = load_app_context(&cli);
 
     #[cfg_attr(any(), rustfmt::skip)]
     match &cli.command {
-        Commands::Search(_)     => SearchCommandImplementation::execute(&context, &cli),
-        Commands::Add(_)        => AddCommandImplementation::execute(&context, &cli),
-        Commands::Remove(_)     => RemoveCommandImplementation::execute(&context, &cli),
-        Commands::List(_)       => ListCommandImplementation::execute(&context, &cli),
-        Commands::ShowConfig(_) => ShowConfigCommandImplementation::execute(&context, &cli),
+        Commands::Search(_)     => SearchCommandImplementation::execute(& mut context, &cli),
+        Commands::Add(_)        => AddCommandImplementation::execute(& mut context, &cli),
+        Commands::Remove(_)     => RemoveCommandImplementation::execute(& mut context, &cli),
+        Commands::List(_)       => ListCommandImplementation::execute(& mut context, &cli),
+        Commands::ShowConfig(_) => ShowConfigCommandImplementation::execute(& mut context, &cli),
     }.inspect_err(log_error)
 }

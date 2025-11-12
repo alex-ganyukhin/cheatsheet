@@ -6,7 +6,7 @@ pub mod show_config;
 pub type SearchCommandImplementation = command::NotImplementedCommandImplementation;
 pub type AddCommandImplementation = command::NotImplementedCommandImplementation;
 pub type RemoveCommandImplementation = command::NotImplementedCommandImplementation;
-pub type ShowConfigCommandImplementation = command::NotImplementedCommandImplementation;
 
 pub use command::CommandImplementation;
 pub use list::ListCommandImplementation;
+pub use show_config::ShowConfigCommandImplementation;
