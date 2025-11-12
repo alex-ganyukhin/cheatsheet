@@ -1,11 +1,12 @@
-#![allow(dead_code)]
-
-pub mod add;
+pub mod command;
 pub mod list;
-pub mod remove;
 pub mod search;
+pub mod show_config;
 
-pub use add::AddCommand;
-pub use list::ListCommand;
-pub use remove::RemoveCommand;
-pub use search::SearchCommand;
+pub type SearchCommandImplementation = command::NotImplementedCommandImplementation;
+pub type AddCommandImplementation = command::NotImplementedCommandImplementation;
+pub type RemoveCommandImplementation = command::NotImplementedCommandImplementation;
+pub type ShowConfigCommandImplementation = command::NotImplementedCommandImplementation;
+
+pub use command::CommandImplementation;
+pub use list::ListCommandImplementation;

@@ -6,3 +6,13 @@
 title = "cs"
 command = "cheatsheet"
 description = "Shortcut for cheatsheet command"
+
+[[entry]]
+title = "cs list"
+command = "cheatsheet list"
+description = "List all available cheat sheet entries"
+
+[[entry]]
+title = "cs verbose"
+command = "cheatsheet -vvv <other>"
+description = "Enables verbose output for debugging purposes"

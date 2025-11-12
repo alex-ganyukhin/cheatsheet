@@ -1,11 +1,18 @@
-#![allow(dead_code)]
+use crate::commands::{command::CommandContext, CommandImplementation};
 
-use crate::domain::{Entry, EntryStorage, EntryStorageError};
+pub struct ListCommandImplementation;
 
-pub struct ListCommand;
-
-impl ListCommand {
-    pub fn run<S: EntryStorage>(storage: &S) -> Result<Vec<Entry>, EntryStorageError> {
-        storage.load_all().map(|iter| iter.collect::<Vec<_>>())
+impl CommandImplementation for ListCommandImplementation {
+    fn execute(context: &CommandContext, _cli: &crate::cli::CheatsheetCli) -> Result<(), anyhow::Error> {
+        context.storage.load_all().map(|entries| {
+            for entry in entries {
+                println!(
+                    "Title: {}\nCommand: {}\nDescription: {}\n",
+                    entry.title,
+                    entry.command,
+                    entry.description.unwrap_or_default()
+                );
+            }
+        })
     }
 }

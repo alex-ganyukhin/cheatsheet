@@ -1,4 +1,15 @@
-use cheatsheet::cli::CheatsheetCli;
+use cheatsheet::commands::command::CommandContext;
+use cheatsheet::commands::AddCommandImplementation;
+use cheatsheet::commands::CommandImplementation;
+use cheatsheet::commands::ListCommandImplementation;
+use cheatsheet::commands::RemoveCommandImplementation;
+use cheatsheet::commands::SearchCommandImplementation;
+use cheatsheet::commands::ShowConfigCommandImplementation;
+
+use cheatsheet::storage::TomlEntryStorage;
+
+use cheatsheet::cli::{CheatsheetCli, Commands};
+
 use clap::Parser;
 
 fn setup_logger(cli: &CheatsheetCli) {
@@ -21,40 +32,37 @@ fn setup_logger(cli: &CheatsheetCli) {
     };
 }
 
-fn main() {
+fn load_app_context(cli: &CheatsheetCli) -> CommandContext {
+    CommandContext {
+        storage: Box::new(TomlEntryStorage::new(std::path::PathBuf::from(cli.config.clone()))),
+    }
+}
+
+fn log_error(err: &anyhow::Error) {
+    spdlog::error!("Error: {}", err);
+
+    let mut source = err.source();
+    while let Some(inner) = source {
+        spdlog::error!("Caused by: {}", inner);
+        source = inner.source();
+    }
+}
+
+fn main() -> Result<(), anyhow::Error> {
     let cli = CheatsheetCli::parse();
 
     setup_logger(&cli);
 
     spdlog::debug!("Parsed CLI arguments: {:#?}", cli);
 
-    match cli.command {
-        cheatsheet::cli::Commands::Search(args) => {
-            spdlog::warn!(
-                "Executing 'search' command with args: {:#?} \n\nIS NOT IMPLEMENTED YET.",
-                args
-            );
-        }
-        cheatsheet::cli::Commands::List(args) => {
-            spdlog::warn!(
-                "Executing 'list' command with args: {:#?} \n\nIS NOT IMPLEMENTED YET.",
-                args
-            );
-        }
-        cheatsheet::cli::Commands::Add(args) => {
-            spdlog::warn!(
-                "Executing 'add' command with args: {:#?} \n\nIS NOT IMPLEMENTED YET.",
-                args
-            );
-        }
-        cheatsheet::cli::Commands::Remove(args) => {
-            spdlog::warn!(
-                "Executing 'remove' command with args: {:#?} \n\nIS NOT IMPLEMENTED YET.",
-                args
-            );
-        }
-        cheatsheet::cli::Commands::ShowConfig(_) => {
-            println!("Using config path: {}", cli.config.as_deref().unwrap_or("UNKNOWN"));
-        }
-    }
+    let context = load_app_context(&cli);
+
+    #[cfg_attr(any(), rustfmt::skip)]
+    match &cli.command {
+        Commands::Search(_)     => SearchCommandImplementation::execute(&context, &cli),
+        Commands::Add(_)        => AddCommandImplementation::execute(&context, &cli),
+        Commands::Remove(_)     => RemoveCommandImplementation::execute(&context, &cli),
+        Commands::List(_)       => ListCommandImplementation::execute(&context, &cli),
+        Commands::ShowConfig(_) => ShowConfigCommandImplementation::execute(&context, &cli),
+    }.inspect_err(log_error)
 }

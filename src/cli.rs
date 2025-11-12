@@ -8,7 +8,7 @@ use crate::constants;
 #[command(name = "cheatsheet", version, about = "A command-line cheatsheet manager")]
 pub struct CheatsheetCli {
     #[arg(short, long, help = "Path to the configuration file", env = constants::env_vars::CONFIG_PATH, default_value = constants::defaults::CONFIG_PATH.as_str())]
-    pub config: Option<String>,
+    pub config: String,
 
     #[arg(short, long, action = ArgAction::Count, help = "Enable verbose output")]
     pub verbose: u8,
@@ -17,7 +17,7 @@ pub struct CheatsheetCli {
     pub command: Commands,
 }
 
-#[derive(Subcommand, Debug)]
+#[derive(Subcommand, Debug, strum_macros::AsRefStr)]
 pub enum Commands {
     Search(SearchArgs),
     ShowConfig(ShowConfigArgs),
