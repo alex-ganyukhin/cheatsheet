@@ -120,6 +120,7 @@ dependencies = [
  "anyhow",
  "clap",
  "fuzzy-matcher",
+ "indexmap",
  "mockall",
  "serde",
  "spdlog-rs",

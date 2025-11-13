@@ -2,10 +2,12 @@ use cheatsheet::commands::command::CommandContext;
 use cheatsheet::commands::AddCommandImplementation;
 use cheatsheet::commands::CommandImplementation;
 use cheatsheet::commands::ListCommandImplementation;
+use cheatsheet::commands::PlaintextCommandOutputAndErrorProcessor;
 use cheatsheet::commands::RemoveCommandImplementation;
 use cheatsheet::commands::SearchCommandImplementation;
 use cheatsheet::commands::ShowConfigCommandImplementation;
 
+use cheatsheet::commands::command::CommandOutputAndErrorProcessor;
 use cheatsheet::storage::TomlEntryStorage;
 
 use cheatsheet::cli::{CheatsheetCli, Commands};
@@ -35,18 +37,12 @@ fn setup_logger(cli: &CheatsheetCli) {
 fn load_app_context(cli: &CheatsheetCli) -> CommandContext {
     CommandContext {
         storage: Box::new(TomlEntryStorage::new(std::path::PathBuf::from(cli.config.clone()))),
-        writer: Box::new(std::io::stdout()),
     }
 }
 
-fn log_error(err: &anyhow::Error) {
-    spdlog::error!("Error: {}", err);
-
-    let mut source = err.source();
-    while let Some(inner) = source {
-        spdlog::error!("Caused by: {}", inner);
-        source = inner.source();
-    }
+fn load_output_processor(_cli: &CheatsheetCli) -> Box<dyn CommandOutputAndErrorProcessor> {
+    // For the time being, we only have one output processor (console), so we return it directly.
+    Box::new(PlaintextCommandOutputAndErrorProcessor::default())
 }
 
 fn main() -> Result<(), anyhow::Error> {
@@ -57,6 +53,7 @@ fn main() -> Result<(), anyhow::Error> {
     spdlog::debug!("Parsed CLI arguments: {:#?}", cli);
 
     let mut context = load_app_context(&cli);
+    let mut output_processor = load_output_processor(&cli);
 
     #[cfg_attr(any(), rustfmt::skip)]
     match &cli.command {
@@ -65,5 +62,8 @@ fn main() -> Result<(), anyhow::Error> {
         Commands::Remove(_)     => RemoveCommandImplementation::execute(& mut context, &cli),
         Commands::List(_)       => ListCommandImplementation::execute(& mut context, &cli),
         Commands::ShowConfig(_) => ShowConfigCommandImplementation::execute(& mut context, &cli),
-    }.inspect_err(log_error)
+    }
+    .inspect( |v|output_processor.as_mut().process_output(v))
+    .inspect_err( |e|output_processor.as_mut().process_error(e))
+    .map(|_| ())
 }
