@@ -1,8 +1,9 @@
 /// A single entry in the cheat sheet
 #[derive(Clone, Debug, PartialEq, Eq)]
+
 pub struct Entry {
-    pub title: String,
-    pub command: String,
+    pub title:       String,
+    pub command:     String,
     pub description: Option<String>,
 }
 
@@ -15,8 +16,8 @@ impl Entry {
         V: Into<String>,
     {
         Self {
-            title: title.into(),
-            command: command.into(),
+            title:       title.into(),
+            command:     command.into(),
             description: description.map(Into::into),
         }
     }

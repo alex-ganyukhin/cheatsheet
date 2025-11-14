@@ -1,25 +1,19 @@
-#![allow(dead_code)]
-
-
 use crate::domain::search::{EntriesSearchEngine, MatchedEntry, SearchParameters};
 use crate::domain::Entry;
 
 
-/// Placeholder fuzzy searcher that returns the provided entries unchanged.
+pub struct SubstrSearch;
 
 
-pub struct FuzzySearch;
-
-
-impl EntriesSearchEngine for FuzzySearch {
+impl EntriesSearchEngine for SubstrSearch {
     fn search(&self, _entries: &[Entry], _search_parameters: &SearchParameters) -> Vec<MatchedEntry> {
         Vec::new()
     }
 }
 
 
-impl FuzzySearch {
+impl SubstrSearch {
     pub fn new() -> Self {
-        FuzzySearch
+        SubstrSearch
     }
 }

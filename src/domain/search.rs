@@ -1,5 +1,7 @@
 use crate::domain::entry::Entry;
 
+
+#[derive(PartialEq, Clone, Debug)]
 pub struct MatchedEntry {
     /// The matched entry
     pub entry: Entry,
@@ -10,11 +12,14 @@ pub struct MatchedEntry {
     pub score: f32,
 }
 
+
+#[derive(PartialEq, Clone, Debug)]
 pub struct SearchParameters {
     /// The query string to search for.
-    pub query: String,
+    pub query:       String,
     pub max_results: Option<usize>,
 }
+
 
 impl SearchParameters {
     pub fn return_all(query: String) -> Self {
@@ -25,7 +30,9 @@ impl SearchParameters {
     }
 }
 
-pub trait EntriesSearch {
+
+#[mockall::automock]
+pub trait EntriesSearchEngine {
     /// Searches through the provided entries using the given query string.
     /// Returns a vector of entries that match the query.
     ///
@@ -33,5 +40,7 @@ pub trait EntriesSearch {
     /// ```
     /// let result = some_search.search(entries, &SearchParameters::return_all("query".into()));
     /// ```
+
+
     fn search(&self, entries: &[Entry], search_parameters: &SearchParameters) -> Vec<MatchedEntry>;
 }
