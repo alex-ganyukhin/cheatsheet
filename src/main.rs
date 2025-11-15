@@ -77,11 +77,11 @@ fn main() -> Result<(), anyhow::Error> {
 
     #[cfg_attr(any(), rustfmt::skip)]
     match &cli.command {
-        Commands::Search(command_config)     => SearchCommandImplementation::execute(& mut context, &cli, command_config),
-        Commands::Add(command_config)        => AddCommandImplementation::execute(& mut context, &cli, command_config),
-        Commands::Remove(command_config)     => RemoveCommandImplementation::execute(& mut context, &cli, command_config),
-        Commands::List(command_config)       => ListCommandImplementation::execute(& mut context, &cli, command_config),
-        Commands::ShowConfig(command_config) => ShowConfigCommandImplementation::execute(& mut context, &cli, command_config),
+        Commands::Search(command_config)     => SearchCommandImplementation::execute(&mut context, &cli, command_config),
+        Commands::Add(command_config)        => AddCommandImplementation::execute(&mut context, &cli, command_config),
+        Commands::Remove(command_config)     => RemoveCommandImplementation::execute(&mut context, &cli, command_config),
+        Commands::List(command_config)       => ListCommandImplementation::execute(&mut context, &cli, command_config),
+        Commands::ShowConfig(command_config) => ShowConfigCommandImplementation::execute(&mut context, &cli, command_config),
     }
     .inspect( |v|output_processor.as_mut().process_output(v))
     .inspect_err( |e|output_processor.as_mut().process_error(e))

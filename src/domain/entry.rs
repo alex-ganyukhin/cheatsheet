@@ -21,4 +21,15 @@ impl Entry {
             description: description.map(Into::into),
         }
     }
+
+    /// Returns fields representation of this entry.
+    pub fn as_fields(&self) -> Vec<&String> {
+        let mut res = Vec::<&String>::with_capacity(3);
+        res.push(&self.title);
+        res.push(&self.command);
+        if let Some(desc) = &self.description {
+            res.push(&desc);
+        }
+        res
+    }
 }

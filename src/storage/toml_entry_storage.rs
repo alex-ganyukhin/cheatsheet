@@ -39,9 +39,6 @@ impl std::error::Error for TomlEntryStorageError {}
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-/// File-based EntryStorage.
-
-
 pub struct TomlEntryStorage {
     path: PathBuf,
 }
@@ -89,11 +86,11 @@ impl EntryStorage for TomlEntryStorage {
 
 
     fn add_entry(&self, _entry: Entry) -> Result<(), anyhow::Error> {
-        return Err(anyhow::anyhow!("FileEntryStorage.add_entry is not implemented yet"));
+        return Err(anyhow::anyhow!("TomlEntryStorage.add_entry is not implemented yet"));
     }
 
 
     fn save_all(&self, _entries: &[Entry]) -> Result<(), anyhow::Error> {
-        return Err(anyhow::anyhow!("FileEntryStorage.save_all is not implemented yet"));
+        return Err(anyhow::anyhow!("TomlEntryStorage.save_all is not implemented yet"));
     }
 }

@@ -53,7 +53,6 @@ pub trait CommandErrorProcessor {
 
 pub trait CommandOutputAndErrorProcessor: CommandOutputProcessor + CommandErrorProcessor {}
 
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
@@ -78,6 +77,12 @@ impl From<Entry> for CommandOutputVariant {
             "command".to_string() => entry.command.into(),
             "description".to_string() => entry.description.unwrap_or_default().into(),
         })
+    }
+}
+
+impl From<Vec<CommandOutputVariant>> for CommandOutputVariant {
+    fn from(array: Vec<CommandOutputVariant>) -> Self {
+        CommandOutputVariant::Array(array)
     }
 }
 

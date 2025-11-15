@@ -14,6 +14,6 @@ impl EntriesSearchEngine for SubstrSearch {
 
 impl SubstrSearch {
     pub fn new() -> Self {
-        SubstrSearch
+        Self
     }
 }
