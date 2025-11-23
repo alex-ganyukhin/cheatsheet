@@ -34,19 +34,17 @@ fn search_impl<TFuzzyLibImpl: FuzzyMatcher>(
     entries
         .iter()
         .enumerate()
-        .map(|(entry_index, entry)| {
+        .filter_map(|(entry_index, entry)| {
             entry
                 .as_fields()
                 .iter()
-                .map(|f| matcher.fuzzy_match(f, &search_parameters.query))
-                .flatten()
+                .filter_map(|f| matcher.fuzzy_match(f, &search_parameters.query))
                 .max()
                 .map(|max_score| MatchedEntry {
                     entry_index: entry_index,
                     score:       max_score,
                 })
         })
-        .flatten()
         .collect_vec()
 }
 

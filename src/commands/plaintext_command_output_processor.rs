@@ -13,9 +13,10 @@ impl PlaintextCommandOutputAndErrorProcessor {
     pub fn new(cout: Box<dyn std::io::Write>, cerr: Box<dyn std::io::Write>) -> Self {
         Self { cout: cout, cerr: cerr }
     }
+}
 
-
-    pub fn default() -> Self {
+impl Default for PlaintextCommandOutputAndErrorProcessor {
+    fn default() -> Self {
         Self {
             cout: Box::new(std::io::stdout()),
             cerr: Box::new(std::io::stderr()),
