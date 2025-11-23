@@ -1,8 +1,9 @@
 /// A single entry in the cheat sheet
 #[derive(Clone, Debug, PartialEq, Eq)]
+
 pub struct Entry {
-    pub title: String,
-    pub command: String,
+    pub title:       String,
+    pub command:     String,
     pub description: Option<String>,
 }
 
@@ -15,9 +16,20 @@ impl Entry {
         V: Into<String>,
     {
         Self {
-            title: title.into(),
-            command: command.into(),
+            title:       title.into(),
+            command:     command.into(),
             description: description.map(Into::into),
         }
+    }
+
+    /// Returns fields representation of this entry.
+    pub fn as_fields(&self) -> Vec<&String> {
+        let mut res = Vec::<&String>::with_capacity(3);
+        res.push(&self.title);
+        res.push(&self.command);
+        if let Some(desc) = &self.description {
+            res.push(&desc);
+        }
+        res
     }
 }

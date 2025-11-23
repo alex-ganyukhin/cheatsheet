@@ -1,6 +1,5 @@
-#![allow(dead_code)]
+mod serde_models;
+pub mod toml_entry_storage;
 
-pub mod config_path;
-pub mod file_store;
 
-pub use file_store::FileEntryStorage;
+pub use toml_entry_storage::TomlEntryStorage;
