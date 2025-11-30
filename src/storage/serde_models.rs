@@ -15,8 +15,6 @@ pub struct TomlEntry {
 
 
 #[derive(Serialize, Deserialize)]
-
-
 pub struct TomlEntryStorageDef {
     pub entry: Vec<TomlEntry>,
 }

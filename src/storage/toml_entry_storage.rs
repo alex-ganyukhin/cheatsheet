@@ -1,3 +1,4 @@
+use std::collections::{HashMap, HashSet};
 use std::fs;
 use std::path::{Path, PathBuf};
 
@@ -5,11 +6,9 @@ use std::path::{Path, PathBuf};
 use anyhow::Context;
 use strum_macros::{AsRefStr, Display};
 
-
 use crate::storage::serde_models::TomlEntryStorageDef;
 
-
-use crate::domain::{Entry, EntryStorage};
+use crate::domain::{Entry, EntryStorage, OnConflict};
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -30,6 +29,10 @@ pub enum TomlEntryStorageError {
     /// Used when the file cannot be opened due to any error
     #[strum(to_string = "CannotOpen {0}")]
     CannotOpen(String),
+
+    /// Used when the file cannot be written to due to any error
+    #[strum(to_string = "CannotWrite {0}")]
+    CannotWrite(String),
 }
 
 
@@ -52,6 +55,28 @@ impl TomlEntryStorage {
 
     pub fn path(&self) -> &Path {
         &self.path
+    }
+
+    /// Stores all entries into the TOML file, replacing any existing content.
+    fn store_replacing(&self, entries: Vec<Entry>) -> Result<(), anyhow::Error> {
+        let storage_def = TomlEntryStorageDef {
+            entry: entries
+                .into_iter()
+                .map(move |e| crate::storage::serde_models::TomlEntry {
+                    title:       e.title,
+                    command:     e.command,
+                    description: e.description,
+                })
+                .collect(),
+        };
+
+        let toml_string = toml::to_string(&storage_def).with_context(|| {
+            TomlEntryStorageError::InvalidFormat("Failed to serialize entries to TOML format.".to_string())
+        })?;
+
+        fs::write(self.path(), toml_string).with_context(|| {
+            TomlEntryStorageError::CannotWrite(format!("Cannot write to file at path {}", self.path.display()))
+        })
     }
 }
 
@@ -85,12 +110,44 @@ impl EntryStorage for TomlEntryStorage {
     }
 
 
-    fn add_entry(&self, _entry: Entry) -> Result<(), anyhow::Error> {
-        return Err(anyhow::anyhow!("TomlEntryStorage.add_entry is not implemented yet"));
+    fn add(&self, entries: Vec<Entry>, on_conflict: OnConflict) -> Result<(), anyhow::Error> {
+        let mut existing_entries = self.load_all()?;
+        let mut entries_to_add = entries
+            .into_iter()
+            .map(move |e| (e.title.clone(), e))
+            .collect::<HashMap<_, _>>();
+
+        // 1. Handle conflicts
+        for existing_entry in existing_entries.iter_mut() {
+            if let Some(new_entry) = entries_to_add.remove(&existing_entry.title) {
+                match on_conflict {
+                    OnConflict::Error => {
+                        return Err(anyhow::anyhow!(
+                            "Entry with title '{}' already exists.",
+                            existing_entry.title
+                        ));
+                    }
+                    OnConflict::Replace => {
+                        *existing_entry = new_entry;
+                    }
+                }
+            }
+        }
+
+        // 2. Append new entries
+        let mut final_entries = existing_entries;
+        final_entries.extend(entries_to_add.into_values());
+
+        self.store_replacing(final_entries)
     }
 
 
-    fn save_all(&self, _entries: &[Entry]) -> Result<(), anyhow::Error> {
-        return Err(anyhow::anyhow!("TomlEntryStorage.save_all is not implemented yet"));
+    fn remove(&self, titles: Vec<String>) -> Result<(), anyhow::Error> {
+        let mut entries_in_storage = self.load_all()?;
+        let titles = titles.into_iter().collect::<HashSet<_>>();
+
+        entries_in_storage.retain(|e| !titles.contains(&e.title));
+
+        self.store_replacing(entries_in_storage)
     }
 }

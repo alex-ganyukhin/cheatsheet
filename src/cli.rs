@@ -85,7 +85,7 @@ pub struct ListArgs {}
 /// The "add" sub-command
 /// - Adds(appends) a new command to the cheatsheet
 /// - Requires title, command, and optional description
-#[derive(Parser, Debug)]
+#[derive(Parser, Debug, Clone)]
 pub struct AddArgs {
     #[arg(short, long, required = true, help = "Title of the command. Must be unique.")]
     pub title: String,
@@ -95,6 +95,13 @@ pub struct AddArgs {
 
     #[arg(short, long, required = false, help = "Description of the command")]
     pub description: Option<String>,
+
+    #[arg(
+        short,
+        long,
+        help = "If set, if an entry with the same title exists, it will be replaced, otherwise it will be appended."
+    )]
+    pub replacing: bool,
 }
 
 

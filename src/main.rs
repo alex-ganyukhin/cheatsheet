@@ -83,7 +83,9 @@ fn main() -> Result<(), anyhow::Error> {
         Commands::List(command_config)       => ListCommandImplementation::execute(&mut context, &cli, command_config),
         Commands::ShowConfig(command_config) => ShowConfigCommandImplementation::execute(&mut context, &cli, command_config),
     }
-    .inspect( |v|output_processor.as_mut().process_output(v))
-    .inspect_err( |e|output_processor.as_mut().process_error(e))
-    .map(|_| ())
+    .map( |v| {output_processor.as_mut().process_output(&v); ()} )
+    .inspect_err( |e| output_processor.as_mut().process_error(e) )
+
+    // Returning Result<..., anyhow::Error> from main
+    // Rust will print the error chain to stderr
 }

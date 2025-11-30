@@ -5,3 +5,4 @@ pub mod search;
 
 pub use entry::Entry;
 pub use entry_storage::EntryStorage;
+pub use entry_storage::OnConflict;
