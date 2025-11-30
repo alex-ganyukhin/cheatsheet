@@ -4,17 +4,15 @@
 use serde::{Deserialize, Serialize};
 
 
-#[derive(Serialize, Deserialize)]
-
-
-pub struct TomlEntry {
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
+pub struct EntryModel {
     pub title:       String,
     pub command:     String,
     pub description: Option<String>,
 }
 
 
-#[derive(Serialize, Deserialize)]
-pub struct TomlEntryStorageDef {
-    pub entry: Vec<TomlEntry>,
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
+pub struct EntryModelStorageDef {
+    pub entry: Vec<EntryModel>,
 }

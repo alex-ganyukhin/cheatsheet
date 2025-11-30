@@ -19,5 +19,5 @@ description = "Add a new cheat sheet entry"
 
 [[entry]]
 title = "remove"
-command = "cheatsheet remove <title>"
+command = "cheatsheet remove -t <title_1> [-t <title_2> ...]"
 description = "Remove a cheat sheet entry by title"

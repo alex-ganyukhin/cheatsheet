@@ -6,7 +6,7 @@ pub enum OnConflict {
     /// In case of conflict, existing entries should be replaced.
     Replace,
 
-    /// In case of conflict, existing entries should be kept, and new ones ignored.
+    /// In case of conflict, nothing should be done and an error should be returned.
     Error,
 }
 
@@ -18,7 +18,6 @@ pub enum OnConflict {
 #[mockall::automock]
 pub trait EntryStorage {
     /// Loads all entries from the storage.
-    ///
     fn load_all(&self) -> Result<Vec<Entry>, anyhow::Error>;
 
     /// Adds new entries to the storage.
@@ -28,7 +27,7 @@ pub trait EntryStorage {
     /// - `on_conflict`: Strategy to use in case of conflict with existing entries.
     ///
     /// ### Returns
-    /// An error if the operation failed, or details about added/replaced entries.
+    /// `Ok(())` on success, or an error if the operation failed.
     fn add(&self, entries: Vec<Entry>, on_conflict: OnConflict) -> Result<(), anyhow::Error>;
 
     /// Removes entries from the storage.

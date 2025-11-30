@@ -99,7 +99,7 @@ pub struct AddArgs {
     #[arg(
         short,
         long,
-        help = "If set, if an entry with the same title exists, it will be replaced, otherwise it will be appended."
+        help = "Replace an existing entry with the same title if it exists. Without this flag, adding a duplicate title will result in an error."
     )]
     pub replacing: bool,
 }
@@ -112,7 +112,7 @@ pub struct AddArgs {
 /// - Removes a command from the cheatsheet by its title
 #[derive(Parser, Debug, Clone)]
 pub struct RemoveArgs {
-    #[arg(short, long, required = true, help = "Title of the command to remove.")]
+    #[arg(short, long, required = true, help = "Title(s) of the command(s) to remove.")]
     pub title: Vec<String>,
 }
 

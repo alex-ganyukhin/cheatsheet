@@ -85,7 +85,7 @@ mod tests {
 
 
     #[test]
-    fn test_add_command_implementation_when_remove_succeed_then_prints_success_message() {
+    fn test_remove_command_implementation_when_remove_succeed_then_prints_success_message() {
         // Arrange
         let amount_removed = 123usize;
         let expected_success_message = CommandOutputVariant::Value(format!(
