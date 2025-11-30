@@ -18,7 +18,6 @@ impl CommandImplementation<ShowConfigArgs> for ShowConfigCommandImplementation {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 #[cfg(test)]
-
 mod tests {
 
     use crate::cli::CheatsheetCli;

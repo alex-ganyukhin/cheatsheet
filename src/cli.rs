@@ -85,7 +85,7 @@ pub struct ListArgs {}
 /// The "add" sub-command
 /// - Adds(appends) a new command to the cheatsheet
 /// - Requires title, command, and optional description
-#[derive(Parser, Debug)]
+#[derive(Parser, Debug, Clone)]
 pub struct AddArgs {
     #[arg(short, long, required = true, help = "Title of the command. Must be unique.")]
     pub title: String,
@@ -95,6 +95,13 @@ pub struct AddArgs {
 
     #[arg(short, long, required = false, help = "Description of the command")]
     pub description: Option<String>,
+
+    #[arg(
+        short,
+        long,
+        help = "Replace an existing entry with the same title if it exists. Without this flag, adding a duplicate title will result in an error."
+    )]
+    pub replacing: bool,
 }
 
 
@@ -103,10 +110,10 @@ pub struct AddArgs {
 
 /// The "remove" sub-command
 /// - Removes a command from the cheatsheet by its title
-#[derive(Parser, Debug)]
+#[derive(Parser, Debug, Clone)]
 pub struct RemoveArgs {
-    #[arg(short, long, required = true, help = "Title of the command to remove.")]
-    pub title: String,
+    #[arg(short, long, required = true, help = "Title(s) of the command(s) to remove.")]
+    pub title: Vec<String>,
 }
 
 

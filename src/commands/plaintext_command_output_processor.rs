@@ -4,22 +4,25 @@ use crate::commands::command::{
 
 
 pub struct PlaintextCommandOutputAndErrorProcessor {
-    cout: Box<dyn std::io::Write>,
-    cerr: Box<dyn std::io::Write>,
+    cout:  Box<dyn std::io::Write>,
+    _cerr: Box<dyn std::io::Write>,
 }
 
 
 impl PlaintextCommandOutputAndErrorProcessor {
     pub fn new(cout: Box<dyn std::io::Write>, cerr: Box<dyn std::io::Write>) -> Self {
-        Self { cout: cout, cerr: cerr }
+        Self {
+            cout:  cout,
+            _cerr: cerr,
+        }
     }
 }
 
 impl Default for PlaintextCommandOutputAndErrorProcessor {
     fn default() -> Self {
         Self {
-            cout: Box::new(std::io::stdout()),
-            cerr: Box::new(std::io::stderr()),
+            cout:  Box::new(std::io::stdout()),
+            _cerr: Box::new(std::io::stderr()),
         }
     }
 }
@@ -73,8 +76,6 @@ impl CommandErrorProcessor for PlaintextCommandOutputAndErrorProcessor {
             spdlog::error!("Caused by: {}", inner);
             source = inner.source();
         }
-
-        let _ = writeln!(self.cerr, "Error: {}", error);
     }
 }
 

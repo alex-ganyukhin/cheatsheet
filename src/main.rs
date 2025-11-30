@@ -9,7 +9,7 @@ use cheatsheet::commands::ShowConfigCommandImplementation;
 
 
 use cheatsheet::commands::command::CommandOutputAndErrorProcessor;
-use cheatsheet::storage::TomlEntryStorage;
+use cheatsheet::storage::{ModelStorageIOEntryStorageAdapter, TomlModelStorageIO};
 
 
 use cheatsheet::cli::{CheatsheetCli, Commands};
@@ -48,7 +48,9 @@ fn setup_logger(cli: &CheatsheetCli) {
 
 fn load_app_context(cli: &CheatsheetCli) -> CommandContext {
     CommandContext {
-        storage: Box::new(TomlEntryStorage::new(std::path::PathBuf::from(cli.config.clone()))),
+        storage: Box::new(ModelStorageIOEntryStorageAdapter::new(TomlModelStorageIO::new(
+            std::path::PathBuf::from(cli.config.clone()),
+        ))),
     }
 }
 
@@ -83,7 +85,9 @@ fn main() -> Result<(), anyhow::Error> {
         Commands::List(command_config)       => ListCommandImplementation::execute(&mut context, &cli, command_config),
         Commands::ShowConfig(command_config) => ShowConfigCommandImplementation::execute(&mut context, &cli, command_config),
     }
-    .inspect( |v|output_processor.as_mut().process_output(v))
-    .inspect_err( |e|output_processor.as_mut().process_error(e))
-    .map(|_| ())
+    .map( |v| output_processor.as_mut().process_output(&v) )
+    .inspect_err( |e| output_processor.as_mut().process_error(e) )
+
+    // Returning Result<..., anyhow::Error> from main
+    // Rust will print the error chain to stderr
 }

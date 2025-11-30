@@ -3,16 +3,21 @@
 # This file also contains examples of invocation of the cheatsheet app itself
 
 [[entry]]
-title = "cs"
-command = "cheatsheet"
-description = "Shortcut for cheatsheet command"
-
-[[entry]]
-title = "cs list"
+title = "list"
 command = "cheatsheet list"
 description = "List all available cheat sheet entries"
 
 [[entry]]
-title = "cs verbose"
-command = "cheatsheet -vvv <other>"
-description = "Enables verbose output for debugging purposes"
+title = "search"
+command = "cheatsheet search <keyword>"
+description = "Search for a specific cheat sheet entry"
+
+[[entry]]
+title = "add"
+command = "cheatsheet add -t <title> -c <command> [-d <description>]"
+description = "Add a new cheat sheet entry"
+
+[[entry]]
+title = "remove"
+command = "cheatsheet remove -t <title_1> [-t <title_2> ...]"
+description = "Remove a cheat sheet entry by title"
