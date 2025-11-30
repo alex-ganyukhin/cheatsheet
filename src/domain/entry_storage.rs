@@ -32,5 +32,8 @@ pub trait EntryStorage {
     fn add(&self, entries: Vec<Entry>, on_conflict: OnConflict) -> Result<(), anyhow::Error>;
 
     /// Removes entries from the storage.
-    fn remove(&self, titles: Vec<String>) -> Result<(), anyhow::Error>;
+    ///
+    /// ### Returns
+    /// The number of removed entries.
+    fn remove(&self, titles: Vec<String>) -> Result<usize, anyhow::Error>;
 }

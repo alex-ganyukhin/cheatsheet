@@ -110,10 +110,10 @@ pub struct AddArgs {
 
 /// The "remove" sub-command
 /// - Removes a command from the cheatsheet by its title
-#[derive(Parser, Debug)]
+#[derive(Parser, Debug, Clone)]
 pub struct RemoveArgs {
     #[arg(short, long, required = true, help = "Title of the command to remove.")]
-    pub title: String,
+    pub title: Vec<String>,
 }
 
 

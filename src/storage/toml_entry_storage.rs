@@ -142,12 +142,16 @@ impl EntryStorage for TomlEntryStorage {
     }
 
 
-    fn remove(&self, titles: Vec<String>) -> Result<(), anyhow::Error> {
+    fn remove(&self, titles: Vec<String>) -> Result<usize, anyhow::Error> {
         let mut entries_in_storage = self.load_all()?;
         let titles = titles.into_iter().collect::<HashSet<_>>();
 
+        let initial_count = entries_in_storage.len();
         entries_in_storage.retain(|e| !titles.contains(&e.title));
+        let amount_removed = initial_count - entries_in_storage.len();
 
-        self.store_replacing(entries_in_storage)
+        self.store_replacing(entries_in_storage)?;
+
+        Ok(amount_removed)
     }
 }
