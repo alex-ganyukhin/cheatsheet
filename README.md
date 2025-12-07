@@ -5,6 +5,12 @@ Perfect for developers who need quick reminders of commands, syntax, or snippets
 
 ---
 
+## Versioning
+
+This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
 ## 🚀 Overview
 
 **Rust Cheat Sheet** lets you save useful commands (e.g., `bash`, `git`, `docker`, etc.)
@@ -69,15 +75,10 @@ cheatsheet ai "list largest files in current folder"
 
 ```bash
 # Add some entries
-cheatsheet add "ls" "List directory contents"
-cheatsheet add "grep" "Search for text in files"
+cheatsheet add -t "ls" -c "ls" -d "List directory contents"
+cheatsheet add -t "grep" -c "grep" -d "Search for text in files"
 
-# Find something
-cheatsheet grep
-
-# Interactive search
-cheatsheet
-
-# Ask AI
-cheatsheet ai "find all text files containing TODO"
+# Search for an entry
+cheatsheet search -f grep
+# Will display the "grep" command with its description and title.
 ```
